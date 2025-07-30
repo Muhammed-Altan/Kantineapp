@@ -140,4 +140,8 @@ function mealComments(mealId) {
 const sortedMeals = computed(() => {
   return meals.value;
 });
+
+const fetchMeals = () => {
+  console.log('Dummy fetchMeals function called');
+};
 </script>
