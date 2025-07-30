@@ -18,28 +18,35 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 const orders = ref([])
-const meals = ref([])
-const users = ref([])
+const meals = ref([
+  { _id: '1', name: 'Pasta Bolognese' },
+  { _id: '2', name: 'Chicken Salad' },
+  { _id: '3', name: 'Pancakes' },
+])
+const users = ref([
+  { _id: '1', username: 'User1' },
+  { _id: '2', username: 'User2' },
+])
 
 function shortId(id) {
   return typeof id === 'string' ? id.slice(-6) : id
 }
 
 function getMealName(mealId) {
-  const meal = meals.value.find(m => m._id === mealId || m._id?.toString() === mealId?.toString())
+  const meal = meals.value.find(m => m._id === mealId)
   return meal ? meal.name : 'Ukendt måltid'
 }
 
 function getUsername(userId) {
-  const user = users.value.find(u => u._id === userId || u._id?.toString() === userId?.toString())
+  const user = users.value.find(u => u._id === userId)
   return user ? user.username : 'Ukendt bruger'
 }
 
 function getMealDate(mealId) {
-  const meal = meals.value.find(m => m._id === mealId || m._id?.toString() === mealId?.toString())
+  const meal = meals.value.find(m => m._id === mealId)
   return meal ? meal.dateTime : null
 }
 
@@ -54,30 +61,4 @@ function getWeekdayAndDate(mealId) {
   const month = months[date.getMonth()]
   return `${weekday} d. ${day} ${month}`
 }
-
-onMounted(async () => {
-  const token = localStorage.getItem('token')
-  if (!token) return
-
-  const res = await fetch('http://localhost:3001/orders/my', {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
-  if (res.ok) {
-    orders.value = await res.json()
-  } else {
-    orders.value = []
-  }
-
-  const mealRes = await fetch('http://localhost:3001/meals')
-  if (mealRes.ok) {
-    meals.value = await mealRes.json()
-  }
-
-  const userRes = await fetch('http://localhost:3001/users')
-  if (userRes.ok) {
-    users.value = await userRes.json()
-  }
-})
 </script>

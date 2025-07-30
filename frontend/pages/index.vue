@@ -12,18 +12,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 const foodSaved = ref(0);
 const orderCount = ref(0);
 
-onMounted(async () => {
-  const orderRes = await fetch('http://localhost:3001/orders');
-  const orders = await orderRes.json();
-  orderCount.value = orders.length;
-  
-  const savedRes = await fetch(`http://localhost:3001/foodsaved?orders=${orderCount.value}`);
-  const saved = await savedRes.json();
-  foodSaved.value = saved.foodSaved;
-});
+// Removed all backend-related fetch functions
 </script>
