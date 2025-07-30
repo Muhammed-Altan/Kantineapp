@@ -20,36 +20,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { jwtDecode } from 'jwt-decode'
 
-const toast = useToast()
-const isLoggedIn = ref(false)
-const decoded = ref(null)
-const router = useRouter()
-const route = useRoute()
 
-function checkAuth() {
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token')
-    if (token) {
-      isLoggedIn.value = true
-      decoded.value = jwtDecode(token)
-    } else {
-      isLoggedIn.value = false
-      decoded.value = null
-    }
-  }
-}
-
-onMounted(checkAuth)
-watch(route, checkAuth)
-
-const handleLogout = () => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('token')
-    isLoggedIn.value = false
-    toast.add({ title: 'Success', description: 'You have succesfully logged out.', color: 'Succes' })
-    router.push('/login')
-  }
-}
 </script>
